@@ -8,9 +8,8 @@ describe('NgxDragAndResizeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ NgxDragAndResizeComponent ]
-    })
-    .compileComponents();
+      declarations: [NgxDragAndResizeComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {
