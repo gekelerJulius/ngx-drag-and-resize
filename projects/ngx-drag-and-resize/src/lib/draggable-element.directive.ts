@@ -1,10 +1,9 @@
-import { Directive, ElementRef, HostListener, Input, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, HostListener, Renderer2 } from '@angular/core';
 
 @Directive({
   selector: '[draggableElement]',
 })
 export class DraggableElementDirective {
-  @Input() millisBetweenUpdates = 1;
   private dragging = false;
   private mousePosition: { x: number; y: number } = { x: 0, y: 0 };
 
