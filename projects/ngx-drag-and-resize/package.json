@@ -1,6 +1,31 @@
 {
   "name": "ngx-drag-and-resize",
   "version": "0.0.1",
+  "description": "A Library exporting a draggableElement and a resizableElement Directive",
+  "author": {
+    "name": "Julius Gekeler"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gekelerJulius/ngx-drag-and-resize.git"
+  },
+  "bugs": {
+    "url": "https://github.com/gekelerJulius/ngx-drag-and-resize/issues"
+  },
+  "homepage": "https://github.com/gekelerJulius/ngx-drag-and-resize",
+  "keywords": [
+    "angular",
+    "typescript",
+    "ng",
+    "ngx",
+    "directive",
+    "simple",
+    "draggable",
+    "drag",
+    "resize",
+    "resizable"
+  ],
+  "license": "MIT",
   "peerDependencies": {
     "@angular/common": "^13.3.0",
     "@angular/core": "^13.3.0"

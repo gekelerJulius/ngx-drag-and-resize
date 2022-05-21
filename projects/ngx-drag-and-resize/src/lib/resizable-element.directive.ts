@@ -72,7 +72,7 @@ export class ResizableElementDirective {
       this.renderer2.setStyle(handler, 'width', this.handlerSize);
       this.renderer2.setStyle(handler, 'height', this.handlerSize);
 
-      handler.addEventListener('mousedown', (ev) => {
+      handler.addEventListener('mousedown', (ev: MouseEvent) => {
         this.currentResizingHandler = handler;
         ev.stopPropagation();
       });

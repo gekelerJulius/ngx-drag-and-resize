@@ -23,16 +23,18 @@ export class DraggableElementDirective {
     this.renderer2.setStyle(this.elRef.nativeElement, 'cursor', 'move');
 
     this.elRef.nativeElement.addEventListener('mousedown', (ev) => {
-      this.dragging = true;
-      ev.preventDefault();
+      if (!ev.defaultPrevented) {
+        this.dragging = true;
+        ev.preventDefault();
+      }
     });
   }
 
-  @HostListener('window:mousemove', ['$event']) onMouseMove(event: MouseEvent) {
-    if (this.dragging && this.mousePosition) {
-      event.preventDefault();
-      const xDiff = event.clientX - this.mousePosition.x;
-      const yDiff = event.clientY - this.mousePosition.y;
+  @HostListener('window:mousemove', ['$event']) onMouseMove(ev: MouseEvent) {
+    if (this.dragging && this.mousePosition && !ev.defaultPrevented) {
+      ev.preventDefault();
+      const xDiff = ev.clientX - this.mousePosition.x;
+      const yDiff = ev.clientY - this.mousePosition.y;
       const style = window.getComputedStyle(this.elRef.nativeElement);
       const matrix = new WebKitCSSMatrix(style.transform);
       const oldX = matrix.m41;
@@ -44,10 +46,10 @@ export class DraggableElementDirective {
         this.asTranslateString(oldX + xDiff, oldY + yDiff)
       );
     }
-    this.mousePosition = { x: event.clientX, y: event.clientY };
+    this.mousePosition = { x: ev.clientX, y: ev.clientY };
   }
 
-  @HostListener('window:mouseup', ['$event']) onMouseUp(event: MouseEvent) {
+  @HostListener('window:mouseup', ['$event']) onMouseUp(ev: MouseEvent) {
     this.dragging = false;
   }
 
