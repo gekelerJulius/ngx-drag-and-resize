@@ -23,7 +23,7 @@ export class DraggableElementDirective {
     this.renderer2.setStyle(this.elRef.nativeElement, 'cursor', 'move');
 
     this.elRef.nativeElement.addEventListener('mousedown', (ev) => {
-      if (!ev.defaultPrevented) {
+      if (!ev.defaultPrevented && ev.returnValue) {
         this.dragging = true;
         ev.preventDefault();
       }
@@ -31,7 +31,7 @@ export class DraggableElementDirective {
   }
 
   @HostListener('window:mousemove', ['$event']) onMouseMove(ev: MouseEvent) {
-    if (this.dragging && this.mousePosition && !ev.defaultPrevented) {
+    if (this.dragging && this.mousePosition && !ev.defaultPrevented && ev.returnValue) {
       ev.preventDefault();
       const xDiff = ev.clientX - this.mousePosition.x;
       const yDiff = ev.clientY - this.mousePosition.y;
