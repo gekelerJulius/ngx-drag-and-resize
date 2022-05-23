@@ -8,4 +8,10 @@ Run `npm install ngx-drag-and-resize`
 
 ## Usage
 
-Use the Directive `draggableElement` and/or the directive `resizableElement` in your HTML.
+Use the Directive `draggableElement` 
+and/or the directive `resizableElement` in your HTML.
+
+With the Events `ngxDragStart`, `ngxDragging`, `ngxDragEnd`
+for `draggableElement` and 
+the Events `ngxResizeStart`, `ngxResizing`, `ngxResizeEnd`
+for `resizableElement` you can respond to user actions.
