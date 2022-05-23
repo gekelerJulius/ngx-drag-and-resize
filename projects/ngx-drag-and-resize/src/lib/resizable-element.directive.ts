@@ -52,19 +52,19 @@ export class ResizableElementDirective {
       switch (i) {
         case 0:
           this.renderer2.setStyle(handler, 'cursor', 'nw-resize');
-          this.renderer2.setStyle(handler, 'background-color', 'green');
+          // this.renderer2.setStyle(handler, 'background-color', 'green');
           break;
         case 1:
           this.renderer2.setStyle(handler, 'cursor', 'ne-resize');
-          this.renderer2.setStyle(handler, 'background-color', 'red');
+          // this.renderer2.setStyle(handler, 'background-color', 'red');
           break;
         case 2:
           this.renderer2.setStyle(handler, 'cursor', 'se-resize');
-          this.renderer2.setStyle(handler, 'background-color', 'blue');
+          // this.renderer2.setStyle(handler, 'background-color', 'blue');
           break;
         case 3:
           this.renderer2.setStyle(handler, 'cursor', 'sw-resize');
-          this.renderer2.setStyle(handler, 'background-color', 'orange');
+          // this.renderer2.setStyle(handler, 'background-color', 'orange');
           break;
         default:
           break;

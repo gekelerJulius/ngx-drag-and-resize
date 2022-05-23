@@ -1,6 +1,6 @@
 {
   "name": "ngx-drag-and-resize",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "A Library exporting a draggableElement and a resizableElement Directive",
   "author": {
     "name": "Julius Gekeler"
