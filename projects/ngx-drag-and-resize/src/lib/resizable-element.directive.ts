@@ -4,7 +4,7 @@ import { Directive, ElementRef, HostListener, Input, Renderer2 } from '@angular/
   selector: '[resizableElement]',
 })
 export class ResizableElementDirective {
-  @Input() handlerSize = '20px';
+  @Input() handlerSize = 20;
 
   private mousePosition: { x: number; y: number } = { x: 0, y: 0 };
   private currentResizingHandler: any = null;
@@ -32,45 +32,46 @@ export class ResizableElementDirective {
     for (let i = 0; i < handlers.length; i++) {
       const handler = handlers[i];
       handler.id = `resizableElementResizeHandler${i}`;
+      this.renderer2.setStyle(handler, 'z-index', 10);
       this.renderer2.appendChild(elRef.nativeElement, handler);
 
       this.renderer2.setStyle(handler, 'position', 'absolute');
       if (i === 0 || i === 3) {
-        this.renderer2.setStyle(handler, 'left', this.asPxString(0));
+        this.renderer2.setStyle(handler, 'left', this.asPxString(-this.handlerSize/2));
       }
       if (i === 0 || i === 1) {
-        this.renderer2.setStyle(handler, 'top', this.asPxString(0));
+        this.renderer2.setStyle(handler, 'top', this.asPxString(-this.handlerSize/2));
       }
       if (i === 1 || i === 2) {
-        this.renderer2.setStyle(handler, 'right', this.asPxString(0));
+        this.renderer2.setStyle(handler, 'right', this.asPxString(-this.handlerSize/2));
       }
       if (i === 2 || i === 3) {
-        this.renderer2.setStyle(handler, 'bottom', this.asPxString(0));
+        this.renderer2.setStyle(handler, 'bottom', this.asPxString(-this.handlerSize/2));
       }
 
       switch (i) {
         case 0:
           this.renderer2.setStyle(handler, 'cursor', 'nw-resize');
-          // this.renderer2.setStyle(handler, 'background-color', 'green');
+          this.renderer2.setStyle(handler, 'background-color', 'green');
           break;
         case 1:
           this.renderer2.setStyle(handler, 'cursor', 'ne-resize');
-          // this.renderer2.setStyle(handler, 'background-color', 'red');
+          this.renderer2.setStyle(handler, 'background-color', 'red');
           break;
         case 2:
           this.renderer2.setStyle(handler, 'cursor', 'se-resize');
-          // this.renderer2.setStyle(handler, 'background-color', 'blue');
+          this.renderer2.setStyle(handler, 'background-color', 'blue');
           break;
         case 3:
           this.renderer2.setStyle(handler, 'cursor', 'sw-resize');
-          // this.renderer2.setStyle(handler, 'background-color', 'orange');
+          this.renderer2.setStyle(handler, 'background-color', 'orange');
           break;
         default:
           break;
       }
 
-      this.renderer2.setStyle(handler, 'width', this.handlerSize);
-      this.renderer2.setStyle(handler, 'height', this.handlerSize);
+      this.renderer2.setStyle(handler, 'width', this.asPxString(this.handlerSize));
+      this.renderer2.setStyle(handler, 'height', this.asPxString(this.handlerSize));
 
       handler.addEventListener('mousedown', (ev: MouseEvent) => {
         this.currentResizingHandler = handler;

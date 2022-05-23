@@ -101,6 +101,9 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "port": 7201
+          },
           "configurations": {
             "production": {
               "browserTarget": "demo-application:build:production"

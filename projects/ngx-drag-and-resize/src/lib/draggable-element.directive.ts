@@ -20,11 +20,12 @@ export class DraggableElementDirective {
     }
 
     this.renderer2.setStyle(this.elRef.nativeElement, 'position', 'relative');
-    this.renderer2.setStyle(this.elRef.nativeElement, 'cursor', 'move');
+    // this.renderer2.setStyle(this.elRef.nativeElement, 'cursor', 'move');
 
     this.elRef.nativeElement.addEventListener('mousedown', (ev) => {
       if (!ev.defaultPrevented && ev.returnValue) {
         this.dragging = true;
+        this.renderer2.setStyle(this.elRef.nativeElement, 'z-index', 999);
         ev.preventDefault();
       }
     });
@@ -51,6 +52,7 @@ export class DraggableElementDirective {
 
   @HostListener('window:mouseup', ['$event']) onMouseUp(ev: MouseEvent) {
     this.dragging = false;
+    this.renderer2.setStyle(this.elRef.nativeElement, 'z-index', 1);
   }
 
   asTranslateString(x: number, y: number): string {
