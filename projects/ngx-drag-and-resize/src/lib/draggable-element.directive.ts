@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostListener, Renderer2 } from '@angular/core';
+import {Directive, ElementRef, EventEmitter, HostListener, Output, Renderer2} from '@angular/core';
 
 @Directive({
   selector: '[draggableElement]',
@@ -6,6 +6,10 @@ import { Directive, ElementRef, HostListener, Renderer2 } from '@angular/core';
 export class DraggableElementDirective {
   private dragging = false;
   private mousePosition: { x: number; y: number } = { x: 0, y: 0 };
+
+  @Output() ngxDragStart: EventEmitter<void> = new EventEmitter<void>();
+  @Output() ngxDragging: EventEmitter<void> = new EventEmitter<void>();
+  @Output() ngxDragEnd: EventEmitter<void> = new EventEmitter<void>();
 
   constructor(private elRef: ElementRef<HTMLElement>, private renderer2: Renderer2) {
     if (this.elRef.nativeElement.parentElement) {
@@ -25,6 +29,7 @@ export class DraggableElementDirective {
     this.elRef.nativeElement.addEventListener('mousedown', (ev) => {
       if (!ev.defaultPrevented && ev.returnValue) {
         this.dragging = true;
+        this.ngxDragStart.emit();
         this.renderer2.setStyle(this.elRef.nativeElement, 'z-index', 999);
         ev.preventDefault();
       }
@@ -46,12 +51,14 @@ export class DraggableElementDirective {
         'transform',
         this.asTranslateString(oldX + xDiff, oldY + yDiff)
       );
+      this.ngxDragging.emit();
     }
     this.mousePosition = { x: ev.clientX, y: ev.clientY };
   }
 
   @HostListener('window:mouseup', ['$event']) onMouseUp(ev: MouseEvent) {
     this.dragging = false;
+    this.ngxDragEnd.emit();
     this.renderer2.setStyle(this.elRef.nativeElement, 'z-index', 1);
   }
 
