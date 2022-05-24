@@ -1,4 +1,4 @@
-import {Directive, ElementRef, EventEmitter, HostListener, Input, Output, Renderer2} from '@angular/core';
+import { Directive, ElementRef, EventEmitter, HostListener, Input, Output, Renderer2 } from '@angular/core';
 
 @Directive({
   selector: '[resizableElement]',
@@ -29,73 +29,82 @@ export class ResizableElementDirective {
 
     const handlers: HTMLDivElement[] = [];
 
-    const resizeHandleTypes = [ 'TopLeft', 'Top', 'TopRight', 'Right', 'BottomRight', 'Bottom', 'BottomLeft', 'Left'];
+    const resizeHandleTypes = ['TopLeft', 'Top', 'TopRight', 'Right', 'BottomRight', 'Bottom', 'BottomLeft', 'Left'];
     for (let i = 0; i < 8; i++) {
       const handle = document.createElement('div') as HTMLDivElement;
-      this.renderer2.setStyle(handle, 'width', i === 1 || i === 5 ? `calc(100% - ${this.asPxString(this.handlerSize)})` : this.asPxString(this.handlerSize));
-      this.renderer2.setStyle(handle, 'height', i === 3 || i === 7 ? `calc(100% - ${this.asPxString(this.handlerSize)})` : this.asPxString(this.handlerSize));
+      this.renderer2.setStyle(
+        handle,
+        'width',
+        i === 1 || i === 5 ? `calc(100% - ${this.asPxString(this.handlerSize)})` : this.asPxString(this.handlerSize)
+      );
+      this.renderer2.setStyle(
+        handle,
+        'height',
+        i === 3 || i === 7 ? `calc(100% - ${this.asPxString(this.handlerSize)})` : this.asPxString(this.handlerSize)
+      );
       handle.id = `resizableElementResizeHandler${resizeHandleTypes[i]}`;
+      handle.classList.add('resizableElementResizeHandler');
       handlers.push(handle);
     }
 
     for (let i = 0; i < handlers.length; i++) {
       const handler = handlers[i];
-      this.renderer2.setStyle(handler, 'z-index', 10);
       this.renderer2.appendChild(elRef.nativeElement, handler);
-      this.renderer2.setStyle(handler, 'position', 'absolute');
 
+      this.renderer2.setStyle(handler, 'z-index', 10);
+      this.renderer2.setStyle(handler, 'position', 'absolute');
       switch (i) {
         case 0:
           this.renderer2.setStyle(handler, 'cursor', 'nw-resize');
           // this.renderer2.setStyle(handler, 'background-color', 'green');
-          this.renderer2.setStyle(handler, 'left', this.asPxString(-this.handlerSize/2));
-          this.renderer2.setStyle(handler, 'top', this.asPxString(-this.handlerSize/2));
+          this.renderer2.setStyle(handler, 'left', this.asPxString(-this.handlerSize / 2));
+          this.renderer2.setStyle(handler, 'top', this.asPxString(-this.handlerSize / 2));
           break;
         case 1:
           this.renderer2.setStyle(handler, 'cursor', 'n-resize');
           // this.renderer2.setStyle(handler, 'background-color', 'lightgreen');
-          this.renderer2.setStyle(handler, 'left', this.asPxString(this.handlerSize/2));
-          this.renderer2.setStyle(handler, 'right', this.asPxString(this.handlerSize/2));
-          this.renderer2.setStyle(handler, 'top', this.asPxString(-this.handlerSize/2));
+          this.renderer2.setStyle(handler, 'left', this.asPxString(this.handlerSize / 2));
+          this.renderer2.setStyle(handler, 'right', this.asPxString(this.handlerSize / 2));
+          this.renderer2.setStyle(handler, 'top', this.asPxString(-this.handlerSize / 2));
           break;
         case 2:
           this.renderer2.setStyle(handler, 'cursor', 'ne-resize');
           // this.renderer2.setStyle(handler, 'background-color', 'red');
-          this.renderer2.setStyle(handler, 'right', this.asPxString(-this.handlerSize/2));
-          this.renderer2.setStyle(handler, 'top', this.asPxString(-this.handlerSize/2));
+          this.renderer2.setStyle(handler, 'right', this.asPxString(-this.handlerSize / 2));
+          this.renderer2.setStyle(handler, 'top', this.asPxString(-this.handlerSize / 2));
           break;
         case 3:
           this.renderer2.setStyle(handler, 'cursor', 'e-resize');
           // this.renderer2.setStyle(handler, 'background-color', 'pink');
-          this.renderer2.setStyle(handler, 'top', this.asPxString(this.handlerSize/2));
-          this.renderer2.setStyle(handler, 'bottom', this.asPxString(this.handlerSize/2));
-          this.renderer2.setStyle(handler, 'right', this.asPxString(-this.handlerSize/2));
+          this.renderer2.setStyle(handler, 'top', this.asPxString(this.handlerSize / 2));
+          this.renderer2.setStyle(handler, 'bottom', this.asPxString(this.handlerSize / 2));
+          this.renderer2.setStyle(handler, 'right', this.asPxString(-this.handlerSize / 2));
           break;
         case 4:
           this.renderer2.setStyle(handler, 'cursor', 'se-resize');
           // this.renderer2.setStyle(handler, 'background-color', 'darkblue');
-          this.renderer2.setStyle(handler, 'right', this.asPxString(-this.handlerSize/2));
-          this.renderer2.setStyle(handler, 'bottom', this.asPxString(-this.handlerSize/2));
+          this.renderer2.setStyle(handler, 'right', this.asPxString(-this.handlerSize / 2));
+          this.renderer2.setStyle(handler, 'bottom', this.asPxString(-this.handlerSize / 2));
           break;
         case 5:
           this.renderer2.setStyle(handler, 'cursor', 's-resize');
           // this.renderer2.setStyle(handler, 'background-color', 'black');
-          this.renderer2.setStyle(handler, 'right', this.asPxString(this.handlerSize/2));
-          this.renderer2.setStyle(handler, 'left', this.asPxString(this.handlerSize/2));
-          this.renderer2.setStyle(handler, 'bottom', this.asPxString(-this.handlerSize/2));
+          this.renderer2.setStyle(handler, 'right', this.asPxString(this.handlerSize / 2));
+          this.renderer2.setStyle(handler, 'left', this.asPxString(this.handlerSize / 2));
+          this.renderer2.setStyle(handler, 'bottom', this.asPxString(-this.handlerSize / 2));
           break;
         case 6:
           this.renderer2.setStyle(handler, 'cursor', 'sw-resize');
           // this.renderer2.setStyle(handler, 'background-color', 'orange');
-          this.renderer2.setStyle(handler, 'left', this.asPxString(-this.handlerSize/2));
-          this.renderer2.setStyle(handler, 'bottom', this.asPxString(-this.handlerSize/2));
+          this.renderer2.setStyle(handler, 'left', this.asPxString(-this.handlerSize / 2));
+          this.renderer2.setStyle(handler, 'bottom', this.asPxString(-this.handlerSize / 2));
           break;
         case 7:
           this.renderer2.setStyle(handler, 'cursor', 'w-resize');
           // this.renderer2.setStyle(handler, 'background-color', 'yellow');
-          this.renderer2.setStyle(handler, 'top', this.asPxString(this.handlerSize/2));
-          this.renderer2.setStyle(handler, 'bottom', this.asPxString(this.handlerSize/2));
-          this.renderer2.setStyle(handler, 'left', this.asPxString(-this.handlerSize/2));
+          this.renderer2.setStyle(handler, 'top', this.asPxString(this.handlerSize / 2));
+          this.renderer2.setStyle(handler, 'bottom', this.asPxString(this.handlerSize / 2));
+          this.renderer2.setStyle(handler, 'left', this.asPxString(-this.handlerSize / 2));
 
           break;
         default:
