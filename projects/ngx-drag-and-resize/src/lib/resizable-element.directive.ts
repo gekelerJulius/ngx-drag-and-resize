@@ -1,17 +1,18 @@
-import { Directive, ElementRef, EventEmitter, HostListener, Input, Output, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, EventEmitter, HostListener, Input, Output, Renderer2 } from "@angular/core";
 
 @Directive({
   selector: '[resizableElement]',
 })
 export class ResizableElementDirective {
   @Input() handlerSize = 20;
+  @Input() ngxBoundsContainerSelector: string | null = null;
 
   @Output() ngxResizeStart: EventEmitter<void> = new EventEmitter<void>();
   @Output() ngxResizing: EventEmitter<void> = new EventEmitter<void>();
   @Output() ngxResizeEnd: EventEmitter<void> = new EventEmitter<void>();
 
   private mousePosition: { x: number; y: number } = { x: 0, y: 0 };
-  private currentResizingHandler: any = null;
+  private currentResizingHandler: any;
 
   constructor(private elRef: ElementRef<HTMLElement>, private renderer2: Renderer2) {
     if (this.elRef.nativeElement.parentElement) {
@@ -125,52 +126,52 @@ export class ResizableElementDirective {
       event.cancelBubble = true;
       const xDiff = event.clientX - this.mousePosition.x;
       const yDiff = event.clientY - this.mousePosition.y;
-      const style = window.getComputedStyle(this.elRef.nativeElement);
-      const matrix = new WebKitCSSMatrix(style.transform);
-      const oldX = matrix.m41;
-      const oldY = matrix.m42;
-      const rect: DOMRect = this.elRef.nativeElement.getBoundingClientRect();
+      let style = window.getComputedStyle(this.elRef.nativeElement);
+      let matrix = new WebKitCSSMatrix(style.transform);
+      let oldX = matrix.m41;
+      let oldY = matrix.m42;
+      let boundingElement;
+
+      if (typeof this.ngxBoundsContainerSelector === 'string') {
+        boundingElement = document.querySelector(this.ngxBoundsContainerSelector);
+        if (!boundingElement) {
+          console.warn(`Bounding Element not found with selector ${this.ngxBoundsContainerSelector} \n
+          Check your input and DOM for the Element`);
+        }
+      }
 
       switch (this.currentResizingHandler.id) {
         case 'resizableElementResizeHandlerTopLeft':
-          this.renderer2.setStyle(this.elRef.nativeElement, 'width', this.asPxString(rect.width - xDiff));
-          this.renderer2.setStyle(this.elRef.nativeElement, 'height', this.asPxString(rect.height - yDiff));
-          this.renderer2.setStyle(
-            this.elRef.nativeElement,
-            'transform',
-            this.asTransformString(oldX + xDiff, oldY + yDiff)
-          );
+          this.resizeLeft(boundingElement, oldX, oldY, xDiff);
+          style = window.getComputedStyle(this.elRef.nativeElement);
+          matrix = new WebKitCSSMatrix(style.transform);
+          oldX = matrix.m41;
+          oldY = matrix.m42;
+          this.resizeTop(boundingElement, oldX, oldY, yDiff);
           break;
         case 'resizableElementResizeHandlerTop':
-          this.renderer2.setStyle(this.elRef.nativeElement, 'height', this.asPxString(rect.height - yDiff));
-          this.renderer2.setStyle(this.elRef.nativeElement, 'transform', this.asTransformString(oldX, oldY + yDiff));
+          this.resizeTop(boundingElement, oldX, oldY, yDiff);
           break;
         case 'resizableElementResizeHandlerTopRight':
-          this.renderer2.setStyle(this.elRef.nativeElement, 'width', this.asPxString(rect.width + xDiff));
-          this.renderer2.setStyle(this.elRef.nativeElement, 'height', this.asPxString(rect.height - yDiff));
-          this.renderer2.setStyle(this.elRef.nativeElement, 'transform', this.asTransformString(oldX, oldY + yDiff));
+          this.resizeRight(boundingElement, oldX, oldY, xDiff);
+          this.resizeTop(boundingElement, oldX, oldY, yDiff);
           break;
         case 'resizableElementResizeHandlerRight':
-          this.renderer2.setStyle(this.elRef.nativeElement, 'width', this.asPxString(rect.width + xDiff));
-          this.renderer2.setStyle(this.elRef.nativeElement, 'transform', this.asTransformString(oldX, oldY));
+          this.resizeRight(boundingElement, oldX, oldY, xDiff);
           break;
         case 'resizableElementResizeHandlerBottomRight':
-          this.renderer2.setStyle(this.elRef.nativeElement, 'width', this.asPxString(rect.width + xDiff));
-          this.renderer2.setStyle(this.elRef.nativeElement, 'height', this.asPxString(rect.height + yDiff));
-          this.renderer2.setStyle(this.elRef.nativeElement, 'transform', this.asTransformString(oldX, oldY));
+          this.resizeRight(boundingElement, oldX, oldY, xDiff);
+          this.resizeBottom(boundingElement, oldX, oldY, yDiff);
           break;
         case 'resizableElementResizeHandlerBottom':
-          this.renderer2.setStyle(this.elRef.nativeElement, 'height', this.asPxString(rect.height + yDiff));
-          this.renderer2.setStyle(this.elRef.nativeElement, 'transform', this.asTransformString(oldX, oldY));
+          this.resizeBottom(boundingElement, oldX, oldY, yDiff);
           break;
         case 'resizableElementResizeHandlerBottomLeft':
-          this.renderer2.setStyle(this.elRef.nativeElement, 'width', this.asPxString(rect.width - xDiff));
-          this.renderer2.setStyle(this.elRef.nativeElement, 'height', this.asPxString(rect.height + yDiff));
-          this.renderer2.setStyle(this.elRef.nativeElement, 'transform', this.asTransformString(oldX + xDiff, oldY));
+          this.resizeLeft(boundingElement, oldX, oldY, xDiff);
+          this.resizeBottom(boundingElement, oldX, oldY, yDiff);
           break;
         case 'resizableElementResizeHandlerLeft':
-          this.renderer2.setStyle(this.elRef.nativeElement, 'width', this.asPxString(rect.width - xDiff));
-          this.renderer2.setStyle(this.elRef.nativeElement, 'transform', this.asTransformString(oldX + xDiff, oldY));
+          this.resizeLeft(boundingElement, oldX, oldY, xDiff);
           break;
         default:
           break;
@@ -178,6 +179,62 @@ export class ResizableElementDirective {
       this.ngxResizing.emit();
     }
     this.mousePosition = { x: event.clientX, y: event.clientY };
+  }
+
+  resizeLeft(boundingElement: Element | null | undefined, oldX: number, oldY: number, xDiff: number): void {
+    if (
+      !boundingElement ||
+      this.currentResizingHandler?.getBoundingClientRect()?.x - xDiff > boundingElement.getBoundingClientRect().x
+    ) {
+      this.renderer2.setStyle(
+        this.elRef.nativeElement,
+        'width',
+        this.asPxString(this.elRef.nativeElement.getBoundingClientRect().width - xDiff)
+      );
+      this.renderer2.setStyle(this.elRef.nativeElement, 'transform', this.asTransformString(oldX + xDiff, oldY));
+    }
+  }
+
+  resizeTop(boundingElement: Element | null | undefined, oldX: number, oldY: number, yDiff: number): void {
+    if (
+      !boundingElement ||
+      this.currentResizingHandler?.getBoundingClientRect()?.y - yDiff > boundingElement.getBoundingClientRect().y
+    ) {
+      this.renderer2.setStyle(
+        this.elRef.nativeElement,
+        'height',
+        this.asPxString(this.elRef.nativeElement.getBoundingClientRect().height - yDiff)
+      );
+      this.renderer2.setStyle(this.elRef.nativeElement, 'transform', this.asTransformString(oldX, oldY + yDiff));
+    }
+  }
+
+  resizeRight(boundingElement: Element | null | undefined, oldX: number, oldY: number, xDiff: number): void {
+    if (
+      !boundingElement ||
+      this.currentResizingHandler?.getBoundingClientRect()?.x + xDiff <
+        boundingElement.getBoundingClientRect().x + boundingElement.getBoundingClientRect().width
+    ) {
+      this.renderer2.setStyle(
+        this.elRef.nativeElement,
+        'width',
+        this.asPxString(this.elRef.nativeElement.getBoundingClientRect().width + xDiff)
+      );
+    }
+  }
+
+  resizeBottom(boundingElement: Element | null | undefined, oldX: number, oldY: number, yDiff: number): void {
+    if (
+      !boundingElement ||
+      this.currentResizingHandler?.getBoundingClientRect()?.y + yDiff <
+        boundingElement.getBoundingClientRect().y + boundingElement.getBoundingClientRect().height
+    ) {
+      this.renderer2.setStyle(
+        this.elRef.nativeElement,
+        'height',
+        this.asPxString(this.elRef.nativeElement.getBoundingClientRect().height + yDiff)
+      );
+    }
   }
 
   @HostListener('window:mouseup', ['$event']) onMouseUp(event: MouseEvent) {

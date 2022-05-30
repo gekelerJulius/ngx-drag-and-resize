@@ -15,6 +15,9 @@
       "ngx-drag-and-resize": [
         "dist/ngx-drag-and-resize/ngx-drag-and-resize",
         "dist/ngx-drag-and-resize"
+      ],
+      "tty": [
+        "node_modules/ng-packagr/lib/utils"
       ]
     },
     "declaration": false,
