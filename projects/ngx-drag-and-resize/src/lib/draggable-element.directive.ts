@@ -25,9 +25,6 @@ export class DraggableElementDirective {
       }
     }
 
-    this.renderer2.setStyle(this.elRef.nativeElement, 'position', 'relative');
-    // this.renderer2.setStyle(this.elRef.nativeElement, 'cursor', 'move');
-
     this.elRef.nativeElement.addEventListener('mousedown', (ev) => {
       if (!ev.defaultPrevented && ev.returnValue) {
         this.dragging = true;

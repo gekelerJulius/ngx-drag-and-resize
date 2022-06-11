@@ -26,7 +26,16 @@ export class ResizableElementDirective {
       }
     }
 
-    this.renderer2.setStyle(this.elRef.nativeElement, 'position', 'relative');
+    if (
+      elRef?.nativeElement?.style?.position !== 'absolute' &&
+      elRef?.nativeElement?.style?.position !== 'relative' &&
+      elRef?.nativeElement?.style?.position !== 'fixed'
+    ) {
+      console.warn(
+        'Element set to position: relative to position resize Handlers. A resizable Element should be positioned absolute or relative'
+      );
+      this.renderer2.setStyle(this.elRef.nativeElement, 'position', 'relative');
+    }
 
     const handlers: HTMLDivElement[] = [];
 
