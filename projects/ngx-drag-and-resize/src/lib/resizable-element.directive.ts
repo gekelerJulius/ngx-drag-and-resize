@@ -247,8 +247,8 @@ export class ResizableElementDirective {
   }
 
   @HostListener('window:mouseup', ['$event']) onMouseUp(ev: MouseEvent) {
+    this.ngxResizeEnd.emit();
     this.currentResizingHandler = null;
-    this.ngxResizeEnd?.emit();
     this.unFocus();
   }
 
