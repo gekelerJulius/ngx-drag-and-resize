@@ -18,7 +18,7 @@
     "@angular/platform-browser": "~13.3.0",
     "@angular/platform-browser-dynamic": "~13.3.0",
     "@angular/router": "~13.3.0",
-    "ngx-drag-and-resize": "^0.0.4",
+    "ngx-drag-and-resize": "^0.1.5",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "tty-browserify": "^0.0.1",
