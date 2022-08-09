@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { NgxDragAndResizeComponent } from './ngx-drag-and-resize.component';
+import { NgxDragAndResizeComponent } from "./ngx-drag-and-resize.component";
 
 describe('NgxDragAndResizeComponent', () => {
   let component: NgxDragAndResizeComponent;

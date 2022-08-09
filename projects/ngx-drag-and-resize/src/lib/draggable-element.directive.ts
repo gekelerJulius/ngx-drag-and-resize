@@ -90,7 +90,17 @@ export class DraggableElementDirective {
 
   @HostListener('window:mouseup', ['$event']) onMouseUp(ev: MouseEvent) {
     this.dragging = false;
-    this.ngxDragEnd.emit();
+    const ele: HTMLElement = this.elRef?.nativeElement;
+    const eleRect = ele?.getBoundingClientRect();
+    if (
+      eleRect &&
+      ev.clientX > eleRect.x &&
+      ev.clientX < eleRect.x + eleRect.width &&
+      ev.clientY > eleRect.y &&
+      ev.clientY < eleRect.y + eleRect.height
+    ) {
+      this.ngxDragEnd?.emit();
+    }
     this.renderer2.setStyle(this.elRef.nativeElement, 'z-index', 1);
   }
 

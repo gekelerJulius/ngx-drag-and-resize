@@ -57,16 +57,9 @@
             "polyfills": "projects/demo-application/src/polyfills.ts",
             "tsConfig": "projects/demo-application/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "allowedCommonJsDependencies": [
-              "tty"
-            ],
-            "assets": [
-              "projects/demo-application/src/favicon.ico",
-              "projects/demo-application/src/assets"
-            ],
-            "styles": [
-              "projects/demo-application/src/styles.scss"
-            ],
+            "allowedCommonJsDependencies": ["tty"],
+            "assets": ["projects/demo-application/src/favicon.ico", "projects/demo-application/src/assets"],
+            "styles": ["projects/demo-application/src/styles.scss"],
             "scripts": []
           },
           "configurations": {
@@ -131,13 +124,8 @@
             "tsConfig": "projects/demo-application/tsconfig.spec.json",
             "karmaConfig": "projects/demo-application/karma.conf.js",
             "inlineStyleLanguage": "scss",
-            "assets": [
-              "projects/demo-application/src/favicon.ico",
-              "projects/demo-application/src/assets"
-            ],
-            "styles": [
-              "projects/demo-application/src/styles.scss"
-            ],
+            "assets": ["projects/demo-application/src/favicon.ico", "projects/demo-application/src/assets"],
+            "styles": ["projects/demo-application/src/styles.scss"],
             "scripts": []
           }
         }

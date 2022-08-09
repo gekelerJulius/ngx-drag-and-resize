@@ -246,9 +246,19 @@ export class ResizableElementDirective {
     }
   }
 
-  @HostListener('window:mouseup', ['$event']) onMouseUp(event: MouseEvent) {
+  @HostListener('window:mouseup', ['$event']) onMouseUp(ev: MouseEvent) {
     this.currentResizingHandler = null;
-    this.ngxResizeEnd.emit();
+    const ele: HTMLElement = this.elRef?.nativeElement;
+    const eleRect = ele?.getBoundingClientRect();
+    if (
+      eleRect &&
+      ev.clientX > eleRect.x &&
+      ev.clientX < eleRect.x + eleRect.width &&
+      ev.clientY > eleRect.y &&
+      ev.clientY < eleRect.y + eleRect.height
+    ) {
+      this.ngxResizeEnd?.emit();
+    }
     this.unFocus();
   }
 

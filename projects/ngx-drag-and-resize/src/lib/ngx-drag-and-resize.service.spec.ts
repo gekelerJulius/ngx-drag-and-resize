@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed } from "@angular/core/testing";
 
-import { NgxDragAndResizeService } from './ngx-drag-and-resize.service';
+import { NgxDragAndResizeService } from "./ngx-drag-and-resize.service";
 
 describe('NgxDragAndResizeService', () => {
   let service: NgxDragAndResizeService;
