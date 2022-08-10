@@ -1,4 +1,4 @@
-import { ResizableElementDirective } from "./resizable-element.directive";
+import { ResizableElementDirective } from './resizable-element.directive';
 
 describe('ResizableElementDirective', () => {
   it('should create an instance', () => {

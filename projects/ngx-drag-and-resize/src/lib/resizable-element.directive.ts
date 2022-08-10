@@ -1,4 +1,4 @@
-import { Directive, ElementRef, EventEmitter, HostListener, Input, Output, Renderer2 } from "@angular/core";
+import { Directive, ElementRef, EventEmitter, HostListener, Input, Output, Renderer2 } from '@angular/core';
 
 @Directive({
   selector: '[resizableElement]',
@@ -247,19 +247,11 @@ export class ResizableElementDirective {
   }
 
   @HostListener('window:mouseup', ['$event']) onMouseUp(ev: MouseEvent) {
-    this.currentResizingHandler = null;
-    const ele: HTMLElement = this.elRef?.nativeElement;
-    const eleRect = ele?.getBoundingClientRect();
-    if (
-      eleRect &&
-      ev.clientX > eleRect.x &&
-      ev.clientX < eleRect.x + eleRect.width &&
-      ev.clientY > eleRect.y &&
-      ev.clientY < eleRect.y + eleRect.height
-    ) {
+    if (this.currentResizingHandler) {
       this.ngxResizeEnd?.emit();
+      this.currentResizingHandler = null;
+      this.unFocus();
     }
-    this.unFocus();
   }
 
   asTransformString(x: number, y: number, xScale = 1, yScale = 1): string {
